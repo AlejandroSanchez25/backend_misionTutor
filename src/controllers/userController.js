@@ -56,6 +56,21 @@ class UserController {
             }
         })
     }
+
+    userByRol(req,res){
+        let tokenC = new TokenController();
+        let token = tokenC.getToken(req);
+        let {rol} = req.body;
+        let decode = jsonwebtoken.decode(token, process.env.NODE_PRIVATE_KEY); 
+        let user_id = decode.id;
+        User.find({rol: rol},(error, docs)=>{
+            if(error){
+                res.status(500).json({error});
+            }else{
+                res.status(200).json(docs);
+            }
+        })
+    }
 }
 
 
