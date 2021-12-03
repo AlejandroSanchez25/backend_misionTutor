@@ -71,6 +71,36 @@ class UserController {
             }
         })
     }
+
+    update(req,res){
+        let {firstName,lastname,age,rol,departamento,city} = req.body;
+        let tokenC = new TokenController();
+        let token = tokenC.getToken(req);
+        let decode = jsonwebtoken.decode(token, process.env.NODE_PRIVATE_KEY); 
+        let user_id = decode.id;
+        User.findOneAndUpdate({_id: user_id},{firstName,lastname,age,rol,departamento,city},(error,doc)=>{
+            if(error){
+                res.status(500).json(error)
+            }else{
+                res.status(200).json({info:"usuario actualizado"});
+            }
+        })
+    }
+
+    updatePassword(req,res){
+        let {password} = req.body;
+        let tokenC = new TokenController();
+        let token = tokenC.getToken(req);
+        let decode = jsonwebtoken.decode(token, process.env.NODE_PRIVATE_KEY); 
+        let user_id = decode.id;
+        User.findOneAndUpdate({_id: user_id},{password},(error,doc)=>{
+            if(error){
+                res.status(500).json(error)
+            }else{
+                res.status(200).json({info:"password actualizado"});
+            }
+        })
+    }
 }
 
 
